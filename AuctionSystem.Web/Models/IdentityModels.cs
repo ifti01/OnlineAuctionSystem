@@ -29,5 +29,7 @@ namespace AuctionSystem.Web.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<AuctionSystem.Entities.Auction> Auctions { get; set; }
     }
 }

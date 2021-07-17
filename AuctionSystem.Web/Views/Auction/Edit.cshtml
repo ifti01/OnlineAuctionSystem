@@ -1,0 +1,35 @@
+﻿@model AuctionSystem.Entities.Auction
+
+@*@{
+    ViewBag.Title = "Edit";
+}*@
+
+<h2>Edit Auction</h2>
+
+<form method="post">
+    <input type="hidden" name="ID" value="@Model.ID" />
+    <div class="form-group">
+        <label>Title</label>
+        <input name="Title" value="@Model.Title" />
+    </div>
+    <div class="form-group">
+        <label>Description</label>
+        <input name="Description" value="@Model.Description" />
+    </div>
+    <div class="form-group">
+        <label>Actual Amount</label>
+        <input name="ActualAmount" value="@Model.ActualAmount" />
+    </div>
+    <div class="form-group">
+        <label>Starting Time</label>
+        <input name="StartingTime" value="@Model.StartingTime" />
+    </div>
+    <div class="form-group">
+        <label>Ending Time</label>
+        <input name="EndTime" value="@Model.EndTime" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
