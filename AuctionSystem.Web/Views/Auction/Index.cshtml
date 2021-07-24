@@ -6,58 +6,128 @@
 
 <h2>Index</h2>
 
-<p>
+@*<p>
     @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        @*<th>
+</p>*@
+
+<div id="listingArea">
+    
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            @*<th>
             @Html.DisplayNameFor(model => model.ImageURL)
         </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ActualAmount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StartingTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </th>
-        <th></th>
-    </tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActualAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th></th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        @*<td>
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                @*<td>
             @Html.DisplayFor(modelItem => item.ImageURL)
         </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ActualAmount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartingTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) 
-           
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActualAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartingTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    <button class="editButton" data-id="@item.ID">Edit</button>
+                    <button class="deleteButton" data-id="@item.ID">Delete</button>
+                </td>
+            </tr>
+        }
 
-</table>
+    </table>
+    <div>
+        <button id="createbutton" class="btn btn-default"> Create an auction </button>
+    </div>
+    
+
+    <div id="contentArea">
+
+    </div>
+    <script>
+        $("#createbutton").click(function() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("Create", "Auction")',
+            }).done(function (response) {
+            
+
+                $("#contentArea").html(response);
+            });
+        });
+
+        $(".editButton").click(function() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("Edit", "Auction")',
+                data: {
+                    ID:$(this).attr("data-id")
+                }
+            }).done(function (response) {
+            
+
+                $("#contentArea").html(response);
+            });
+        });
+
+        $(".deleteButton").click(function () {
+
+            var result = confirm("Are you sure want to delete this?");
+
+            if (result == true) {
+                $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("Delete", "Auction")',
+                        data:{
+                            ID:$(this).attr("data-id")
+                        }
+                    })
+                    .done(function (response) {
+                
+                        $("#listingArea").html(response);
+                    });
+        }
+        });
+
+        $("#createbutton").click(function() {
+            $.ajax({
+                type: 'GET',
+                url: '@Url.Action("Create", "Auction")',
+            }).done(function (response) {
+            
+
+                $("#contentArea").html(response);
+            });
+        });
+    </script>
+
+</div>
+
+

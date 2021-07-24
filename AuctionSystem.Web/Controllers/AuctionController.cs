@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Owin.Security.Provider;
 
 namespace AuctionSystem.Web.Controllers
 {
@@ -17,12 +18,20 @@ namespace AuctionSystem.Web.Controllers
 
             var auctionList = service.GetAllAuction();
 
-            return View(auctionList);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(auctionList);
+            }
+            else
+            {
+                return View(auctionList);
+            }
+            
         }
 
         public ActionResult Create()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
@@ -32,7 +41,7 @@ namespace AuctionSystem.Web.Controllers
             
             service.SaveAuction(auction);
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         public ActionResult Edit(int ID)
@@ -41,7 +50,7 @@ namespace AuctionSystem.Web.Controllers
 
             var auction = service.GetAuctionByID(ID);
 
-            return View(auction);
+            return PartialView(auction);
         }
 
         [HttpPost]
@@ -51,7 +60,7 @@ namespace AuctionSystem.Web.Controllers
 
             service.UpdateAuction(auction);
 
-            return View(auction);
+            return RedirectToAction("Index");
         }
 
         public ActionResult Delete(int ID)
