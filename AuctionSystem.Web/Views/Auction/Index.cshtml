@@ -1,25 +1,14 @@
 ﻿@model IEnumerable<AuctionSystem.Entities.Auction>
 
-@{
-    ViewBag.Title = "Index";
-}
 
-<h2>Index</h2>
-
-@*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
-
-<div id="listingArea">
-    
-    <table class="table">
+<div class="row">
+    <div class="col-lg-12" id="listingArea">
+    <h2>Auctions</h2>
+    <table class="table table-hover">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
-            @*<th>
-            @Html.DisplayNameFor(model => model.ImageURL)
-        </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
@@ -40,9 +29,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
-                @*<td>
-            @Html.DisplayFor(modelItem => item.ImageURL)
-        </td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
@@ -56,15 +42,16 @@
                     @Html.DisplayFor(modelItem => item.EndTime)
                 </td>
                 <td>
-                    <button class="editButton" data-id="@item.ID">Edit</button>
-                    <button class="deleteButton" data-id="@item.ID">Delete</button>
+                    <button class="editButton btn btn-primary" data-id="@item.ID">Edit</button>
+                    <button class="deleteButton btn btn-danger" data-id="@item.ID">Delete</button>
                 </td>
             </tr>
         }
 
     </table>
+
     <div>
-        <button id="createbutton" class="btn btn-default"> Create an auction </button>
+        <button id="createbutton" class="btn btn-success"> Create an auction </button>
     </div>
     
 
@@ -116,18 +103,6 @@
         }
         });
 
-        $("#createbutton").click(function() {
-            $.ajax({
-                type: 'GET',
-                url: '@Url.Action("Create", "Auction")',
-            }).done(function (response) {
-            
-
-                $("#contentArea").html(response);
-            });
-        });
     </script>
-
 </div>
-
-
+</div>
