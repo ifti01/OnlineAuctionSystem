@@ -35,6 +35,15 @@ namespace AuctionSystem.Services
             return context.Auctions.ToList();
 
         }
+        public List<Auction> GetFeaturedAuction()
+        {
+            AuctionSystemContext context = new AuctionSystemContext();
+
+            return context.Auctions.Take(4).ToList();
+
+        }
+
+        
         public void UpdateAuction(Auction auction)
         {
             AuctionSystemContext context = new AuctionSystemContext();
