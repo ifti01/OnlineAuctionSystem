@@ -11,4 +11,9 @@ namespace AuctionSystem.Web.ViewModels
         public List<Auction> AllAuctions { get; set; }
         public List<Auction> FeaturedAuctions { get; set; }
     }
+
+    public class AuctionListingViewModel : PageViewModel
+    {
+        public List<Auction> Auctions { get; set; }
+    }
 }

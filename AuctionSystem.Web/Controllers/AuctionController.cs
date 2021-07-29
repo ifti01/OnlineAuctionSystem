@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AuctionSystem.Web.ViewModels;
 using Microsoft.Owin.Security.Provider;
 
 namespace AuctionSystem.Web.Controllers
@@ -16,15 +17,20 @@ namespace AuctionSystem.Web.Controllers
         // GET: Auction
         public ActionResult Index()
         {
-            var auctionList = service.GetAllAuction();
+            AuctionListingViewModel model = new AuctionListingViewModel();
+
+            model.PageTitle = "Auction Page";
+            model.PageDescription = "List of the Auctions";
+
+            model.Auctions= service.GetAllAuction();
 
             if (Request.IsAjaxRequest())
             {
-                return PartialView(auctionList);
+                return PartialView(model);
             }
             else
             {
-                return View(auctionList);
+                return View(model);
             }
             
         }

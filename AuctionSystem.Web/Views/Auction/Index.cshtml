@@ -1,108 +1,117 @@
-﻿@model IEnumerable<AuctionSystem.Entities.Auction>
+﻿@model AuctionSystem.Web.ViewModels.AuctionListingViewModel
 
 
 <div class="row">
     <div class="col-lg-12" id="listingArea">
-    <h2>Auctions</h2>
-    <table class="table table-hover">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActualAmount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartingTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model) {
+        <h2>Auctions</h2>
+        <table class="table table-hover">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ActualAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartingTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndTime)
-                </td>
-                <td>
-                    <button class="editButton btn btn-primary" data-id="@item.ID">Edit</button>
-                    <button class="deleteButton btn btn-danger" data-id="@item.ID">Delete</button>
-                </td>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    ActualAmount
+                </th>
+                <th>
+                    StartingTime
+                </th>
+                <th>
+                    EndTime
+                </th>
+                <th></th>
             </tr>
-        }
 
-    </table>
+            @foreach (var item in Model.Auctions)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" value="@item.ID" />
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ActualAmount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartingTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </td>
+                    <td>
+                        <button class="editButton btn btn-primary" data-id="@item.ID">Edit</button> |
+                        <button class="deleteButton btn btn-danger" data-id="@item.ID">Delete</button>
+                    </td>
+                </tr>
+            }
 
-    <div>
-        <button id="createbutton" class="btn btn-success"> Create an auction </button>
-    </div>
-    
+        </table>
 
-    <div id="contentArea">
+        <!--Create Button trigger modal data-toggle ar data-target diye dichi -->
+        <div>
+            <button id="createbutton" class="btn btn-success" data-toggle="modal" data-target="#formModal"> Create an auction </button>
+        </div>
 
-    </div>
-    <script>
-        $("#createbutton").click(function() {
-            $.ajax({
-                type: 'GET',
-                url: '@Url.Action("Create", "Auction")',
-            }).done(function (response) {
-            
-
-                $("#contentArea").html(response);
-            });
-        });
-
-        $(".editButton").click(function() {
-            $.ajax({
-                type: 'GET',
-                url: '@Url.Action("Edit", "Auction")',
-                data: {
-                    ID:$(this).attr("data-id")
-                }
-            }).done(function (response) {
-            
-
-                $("#contentArea").html(response);
-            });
-        });
-
-        $(".deleteButton").click(function () {
-
-            var result = confirm("Are you sure want to delete this?");
-
-            if (result == true) {
+        <script>
+            $("#createbutton").click(function() {
                 $.ajax({
-                        type: 'POST',
-                        url: '@Url.Action("Delete", "Auction")',
-                        data:{
-                            ID:$(this).attr("data-id")
-                        }
-                    })
-                    .done(function (response) {
-                
-                        $("#listingArea").html(response);
-                    });
-        }
-        });
+                    type: 'GET',
+                    url: '@Url.Action("Create", "Auction")',
+                }).done(function (response) {
 
-    </script>
+
+                    $("#contentArea").html(response);
+                });
+            });
+
+            $(".editButton").click(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("Edit", "Auction")',
+                    data: {
+                        ID:$(this).attr("data-id")
+                    }
+                }).done(function (response) {
+
+
+                    $("#contentArea").html(response);
+                });
+            });
+
+            $(".deleteButton").click(function () {
+
+                var result = confirm("Are you sure want to delete this?");
+
+                if (result == true) {
+                    $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("Delete", "Auction")',
+                            data:{
+                                ID:$(this).attr("data-id")
+                            }
+                        })
+                        .done(function (response) {
+
+                            $("#listingArea").html(response);
+                        });
+                }
+            });
+
+        </script>
+    </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="contentArea">
+
+                  
+        </div>
+    </div>
 </div>

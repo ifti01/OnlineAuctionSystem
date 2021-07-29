@@ -1,44 +1,59 @@
-﻿
-@{
-    ViewBag.Title = "Create";
-}
-
-<h2>Create Auction</h2>
+﻿<div class="modal-header">
+    <h5 class="modal-title">Create Auction</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
 
 <form id="createForm" method="post" action="@Url.Action("Create", "Auction")">    
-    <div class="form-group">
-        <label>Title</label>
-        <input name="Title"/>
-         </div>
-    <div class="form-group">
-        <label>Description</label>
-        <input name="Description" />
+    
+    <div class="modal-body">
+
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input name="Title" class="form-control" placeholder="Enter Title">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input name="Description" class="form-control" placeholder="Enter Description">
+        </div>
+        <div class="form-group">
+            <label for="amount">Actual Amount</label>
+            <input name="ActualAmount" class="form-control" placeholder="Enter Amount">
+        </div>
+        <div class="form-group">
+            <label>Starting Time</label>
+            <input name="StartingTime" />
+            @*<label for="starttime">Starting Time</label>
+            <input name="StartingTime" class="form-control" placeholder="Enter Start Time" />*@
+        </div>
+        <div class="form-group">
+            <label>Ending Time</label>
+            <input name="EndTime" />
+            @*<label for="endtime">Ending Time</label>
+            <input name="EndingTime" class="form-control" placeholder="Enter End Time"/>*@
+        </div>
     </div>
-    <div class="form-group">
-        <label>Actual Amount</label>
-        <input name="ActualAmount" />
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button class="btn-success" type="button" id="saveButton">Save</button>
     </div>
-    <div class="form-group">
-        <label>Starting Time</label>
-        <input name="StartingTime" />
-    </div>
-    <div class="form-group">
-        <label>Ending Time</label>
-        <input name="EndTime" />
-    </div>
-    <button class="btn-success" type="button" id="saveButton">Save</button>
+
 </form>
+
 
 <script>
     $("#saveButton").click(function() {
         $.ajax({
-            type: 'POST',
-            url: '@Url.Action("Create", "Auction")',
-            data:$("#createForm").serialize()
-        })
-            .done(function (response) {
-                
-                $("#listingArea").html(response);
+                type: 'POST',
+                url: '@Url.Action("Create", "Auction")',
+                data: $("#createForm").serialize()
             })
+            .done(function(response) {
+
+                $('#formModal').modal('toggle');
+                $("#listingArea").html(response);
+            });
     });
 </script>
