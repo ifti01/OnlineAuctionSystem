@@ -22,17 +22,21 @@ namespace AuctionSystem.Web.Controllers
             model.PageTitle = "Auction Page";
             model.PageDescription = "List of the Auctions";
 
-            model.Auctions= service.GetAllAuction();
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView(model);
-            }
-            else
-            {
-                return View(model);
-            }
+            return View(model);
             
+        }
+
+        public ActionResult Listing()
+        {
+            AuctionListingViewModel model = new AuctionListingViewModel();
+
+            model.PageTitle = "Auction Page";
+            model.PageDescription = "List of the Auctions";
+
+            model.Auctions = service.GetAllAuction();
+
+            return View(model);
+
         }
 
         public ActionResult Create()
@@ -44,7 +48,7 @@ namespace AuctionSystem.Web.Controllers
         public ActionResult Create(Auction auction)
         {
             service.SaveAuction(auction);
-            return RedirectToAction("Index");
+            return RedirectToAction("Listing");
         }
 
         public ActionResult Edit(int ID)
@@ -57,7 +61,7 @@ namespace AuctionSystem.Web.Controllers
         public ActionResult Edit(Auction auction)
         {
             service.UpdateAuction(auction);
-            return RedirectToAction("Index");
+            return RedirectToAction("Listing");
         }
 
         public ActionResult Delete(int ID)
@@ -70,7 +74,7 @@ namespace AuctionSystem.Web.Controllers
         public ActionResult Delete(Auction auction)
         {
             service.DeleteAuction(auction);
-            return RedirectToAction("Index");
+            return RedirectToAction("Listing");
         }
 
         public ActionResult Details(int ID)
