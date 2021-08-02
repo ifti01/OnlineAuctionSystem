@@ -171,6 +171,7 @@
     <Compile Include="Controllers\AuctionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -269,9 +270,11 @@
     <Content Include="Views\Auction\Delete.cshtml" />
     <Content Include="Views\Auction\Details.cshtml" />
     <Content Include="Views\Auction\Listing.cshtml" />
+    <Content Include="Views\Shared\UploadPictures.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

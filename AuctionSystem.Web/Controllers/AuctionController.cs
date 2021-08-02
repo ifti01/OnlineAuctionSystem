@@ -19,7 +19,7 @@ namespace AuctionSystem.Web.Controllers
         {
             AuctionListingViewModel model = new AuctionListingViewModel();
 
-            model.PageTitle = "Auction Page";
+            //model.PageTitle = "Auction Page";
             model.PageDescription = "List of the Auctions";
 
             return View(model);
@@ -30,7 +30,7 @@ namespace AuctionSystem.Web.Controllers
         {
             AuctionListingViewModel model = new AuctionListingViewModel();
 
-            model.PageTitle = "Auction Page";
+            //model.PageTitle = "Auction Page";
             model.PageDescription = "List of the Auctions";
 
             model.Auctions = service.GetAllAuction();
@@ -45,8 +45,20 @@ namespace AuctionSystem.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Auction auction)
+        public ActionResult Create(CreateAuctionViewModel model)
         {
+            Auction auction = new Auction();
+
+            auction.Title = model.Title;
+            auction.Description = model.Description;
+            auction.ActualAmount = model.ActualAmount;
+            auction.StartingTime = model.StartingTime;
+            auction.EndTime = model.EndTime;
+
+            var pictureIds = model.AuctionPictures.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+            auction.AuctionPictures = new List<AuctionPicture>();
+            auction.AuctionPictures.AddRange(pictureIds.Select(x => new AuctionPicture() { PictureID = x }).ToList());
+
             service.SaveAuction(auction);
             return RedirectToAction("Listing");
         }

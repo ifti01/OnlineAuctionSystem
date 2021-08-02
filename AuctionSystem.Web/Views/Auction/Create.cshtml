@@ -23,16 +23,24 @@
         </div>
         <div class="form-group">
             <label>Starting Time</label>
+            @*<input type="text" class="form-control" name="StartingTime" id="StartingTime" />*@
             <input name="StartingTime" />
-            @*<label for="starttime">Starting Time</label>
-            <input name="StartingTime" class="form-control" placeholder="Enter Start Time" />*@
         </div>
         <div class="form-group">
             <label>Ending Time</label>
+            @*<input type="text" class="form-control" name="EndingTime" id="EndingTime" />*@
             <input name="EndTime" />
-            @*<label for="endtime">Ending Time</label>
-            <input name="EndingTime" class="form-control" placeholder="Enter End Time"/>*@
         </div>
+        
+        <div class="form-group">
+            <label>Select Pictures</label>
+            <input id="auctionPictures" class="form-control" name="AuctionPictures" type="file" multiple />
+            <div id="picsArea">
+
+            </div>
+            <input type="hidden" name="AuctionPictures" id="pictureIDs" />
+        </div>
+
     </div>
 
     <div class="modal-footer">
@@ -54,6 +62,43 @@
 
                 $('#formModal').modal('toggle');
                 $("#listingArea").html(response);
+            });
+    });
+
+    $("#auctionPictures").change(function() {
+
+        debugger;
+
+
+        var pictures = this.files;
+        var picsData = new FormData();
+
+        for (var i = 0; i < pictures.length; i++) {
+            picsData.append("Picture", pictures[i]);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadPictures", "Shared")',
+            data: picsData,
+            dataType: 'json',
+            processData: false,
+            contentType: false
+        })
+            .done(function (responses) {
+                debugger;
+
+                var picIDs = '';
+                for (var i = 0; i < responses.length; i++) {
+                    var picResponse = responses[i];
+
+                    var imgHtml = "<img class = 'img-fluid' src='/content/images/" + picResponse.pictureURL + "'/>";
+                    $("#picsArea").append(imgHtml);
+
+                    picIDs = picIDs + "," + picResponse.ID;
+                }
+                $("#pictureIDs").val(picIDs);
+
             });
     });
 </script>

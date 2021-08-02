@@ -17,7 +17,7 @@ namespace AuctionSystem.Services
 
             context.Auctions.Add(auction);
             context.SaveChanges();
-
+            
         }
 
         public Auction GetAuctionByID(int ID)
