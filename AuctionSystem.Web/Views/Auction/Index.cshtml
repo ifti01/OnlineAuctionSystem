@@ -44,6 +44,9 @@
     </div>
 </div>
 
+<div id="imageTemplate" style="display: none">
+    <img class='image img-fluid' src="" data-id=""/>
+</div>
 
 <div id="listingArea">
     @{
@@ -78,6 +81,15 @@
                         $("#listingArea").html(response);
                     });
             });
+
+            function RemoveImageOnClick() {
+                $("#picsArea .image").click(function () {
+                    debugger;
+
+                    $(this).remove();
+
+                })
+            }
     </script>
     
 

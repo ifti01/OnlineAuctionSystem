@@ -55,9 +55,11 @@ namespace AuctionSystem.Web.Controllers
             auction.StartingTime = model.StartingTime;
             auction.EndTime = model.EndTime;
 
-            var pictureIds = model.AuctionPictures.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+            var pictureID = model.AuctionPictures.Split(',').Select(int.Parse);
+
+            //var pictureIds = model.AuctionPictures.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
             auction.AuctionPictures = new List<AuctionPicture>();
-            auction.AuctionPictures.AddRange(pictureIds.Select(x => new AuctionPicture() { PictureID = x }).ToList());
+            auction.AuctionPictures.AddRange(pictureID.Select(x => new AuctionPicture() { PictureID = x }).ToList());
 
             service.SaveAuction(auction);
             return RedirectToAction("Listing");

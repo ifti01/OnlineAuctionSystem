@@ -24,12 +24,12 @@
         <div class="form-group">
             <label>Starting Time</label>
             @*<input type="text" class="form-control" name="StartingTime" id="StartingTime" />*@
-            <input name="StartingTime" />
+            <input name="StartingTime" class="form-control" />
         </div>
         <div class="form-group">
             <label>Ending Time</label>
             @*<input type="text" class="form-control" name="EndingTime" id="EndingTime" />*@
-            <input name="EndTime" />
+            <input name="EndTime" class="form-control" />
         </div>
         
         <div class="form-group">
@@ -38,11 +38,12 @@
             <div id="picsArea">
 
             </div>
+            
             <input type="hidden" name="AuctionPictures" id="pictureIDs" />
         </div>
-
+        
     </div>
-
+   
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button class="btn-success" type="button" id="saveButton">Save</button>
@@ -52,7 +53,22 @@
 
 
 <script>
-    $("#saveButton").click(function() {
+    $("#saveButton").click(function () {
+
+        debugger;
+        var imageIDs = [];
+
+        $("#picsArea.image").each(function () {
+
+            
+            var imageID = $(this).attr("data-id");
+            imageIDs.push(imageID);
+        })
+
+        //$("#pictureIDs").val(imageIDs.join());
+        $("#pictureIDs").val(imageIDs);
+
+
         $.ajax({
                 type: 'POST',
                 url: '@Url.Action("Create", "Auction")',
@@ -66,8 +82,6 @@
     });
 
     $("#auctionPictures").change(function() {
-
-        debugger;
 
 
         var pictures = this.files;
@@ -84,21 +98,28 @@
             dataType: 'json',
             processData: false,
             contentType: false
-        })
-            .done(function (responses) {
-                debugger;
+            })
+            .done(function(responses) {
 
-                var picIDs = '';
                 for (var i = 0; i < responses.length; i++) {
                     var picResponse = responses[i];
 
-                    var imgHtml = "<img class = 'img-fluid' src='/content/images/" + picResponse.pictureURL + "'/>";
-                    $("#picsArea").append(imgHtml);
-
-                    picIDs = picIDs + "," + picResponse.ID;
+                    AttachNewImage(picResponse.ID,picResponse.URL);
                 }
-                $("#pictureIDs").val(picIDs);
-
             });
     });
+
+    //clone image template html to every added image
+    function AttachNewImage(imageID,imageURL) {
+        var imgHtml = $("#imageTemplate").clone();
+
+        imgHtml.find(".image").attr('data-id',imageID);
+        imgHtml.find(".image").attr("src", "/Content/images/" + imageURL);
+        
+
+        $("#picsArea").append(imgHtml.html());
+
+        RemoveImageOnClick();
+    }
+
 </script>

@@ -29,6 +29,8 @@ namespace AuctionSystem.Web.Controllers
                 //create picName, and path(url)
                 var path = Server.MapPath("~/Content/images/") + fileName;
 
+                //var picUrl = "~/Content/images/" + fileName;
+
                 // upload pic into images file
                 picture.SaveAs(path);
 
@@ -37,9 +39,9 @@ namespace AuctionSystem.Web.Controllers
 
                 int pictureID = service.SavePicture(dbPicture);
 
-                picturesJSON.Add(new {ID = pictureID,pictureURL = path});
+                picturesJSON.Add(new {ID = pictureID,URL = fileName});
             }
-
+            //pictureURL = path
             result.Data = picturesJSON;
 
             return result ;
