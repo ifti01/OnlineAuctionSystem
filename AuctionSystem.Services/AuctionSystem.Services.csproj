@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuctionServices.cs" />
+    <Compile Include="CategoriesService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SharedService.cs" />
   </ItemGroup>

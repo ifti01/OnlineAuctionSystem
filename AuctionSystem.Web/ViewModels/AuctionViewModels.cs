@@ -24,6 +24,10 @@ namespace AuctionSystem.Web.ViewModels
         public decimal ActualAmount { get; set; }
         public DateTime? StartingTime { get; set; }
         public DateTime? EndTime { get; set; }
+        public Category Category { get; set; }
+        public int CategoryID { get; set; }
         public string AuctionPictures { get; set; }
+        public List<Category> Categories { get; set; }
+
     }
 }

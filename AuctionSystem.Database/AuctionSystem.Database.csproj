@@ -67,6 +67,10 @@
     <Compile Include="Migrations\202108011625460_modelUpdated.Designer.cs">
       <DependentUpon>202108011625460_modelUpdated.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108031616141_addCategories.cs" />
+    <Compile Include="Migrations\202108031616141_addCategories.Designer.cs">
+      <DependentUpon>202108031616141_addCategories.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -92,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108011625460_modelUpdated.resx">
       <DependentUpon>202108011625460_modelUpdated.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108031616141_addCategories.resx">
+      <DependentUpon>202108031616141_addCategories.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

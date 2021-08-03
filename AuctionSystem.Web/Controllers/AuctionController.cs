@@ -14,11 +14,12 @@ namespace AuctionSystem.Web.Controllers
     {
         AuctionServices service = new AuctionServices();
 
+        CategoriesService categoriesService = new CategoriesService();
         // GET: Auction
         public ActionResult Index()
         {
             AuctionListingViewModel model = new AuctionListingViewModel();
-
+            
             //model.PageTitle = "Auction Page";
             model.PageDescription = "List of the Auctions";
 
@@ -41,7 +42,10 @@ namespace AuctionSystem.Web.Controllers
 
         public ActionResult Create()
         {
-            return PartialView();
+            CreateAuctionViewModel model = new CreateAuctionViewModel();
+
+            model.Categories = categoriesService.GetAllCategories();
+            return PartialView(model);
         }
 
         [HttpPost]
@@ -54,6 +58,7 @@ namespace AuctionSystem.Web.Controllers
             auction.ActualAmount = model.ActualAmount;
             auction.StartingTime = model.StartingTime;
             auction.EndTime = model.EndTime;
+            auction.CategoryID = model.CategoryID;
 
             var pictureID = model.AuctionPictures.Split(',').Select(int.Parse);
 

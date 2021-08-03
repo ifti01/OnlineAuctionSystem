@@ -14,5 +14,6 @@ namespace AuctionSystem.Database
         public DbSet<Picture> Pictures { get; set; }
 
         public DbSet<AuctionPicture> AuctionPictures { get; set; }
+        public DbSet<Category> Categories  { get; set; }
     }
 }
