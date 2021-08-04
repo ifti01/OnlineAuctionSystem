@@ -35,7 +35,7 @@ namespace AuctionSystem.Web.Controllers
                 picture.SaveAs(path);
 
                 var dbPicture = new Picture(); //OBject of Picture Entity
-                dbPicture.URL = path;
+                dbPicture.URL = fileName;
 
                 int pictureID = service.SavePicture(dbPicture);
 

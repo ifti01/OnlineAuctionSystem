@@ -98,8 +98,9 @@ namespace AuctionSystem.Web.Controllers
 
         public ActionResult Details(int ID)
         {
-            var auction = service.GetAuctionByID(ID);
-            return View(auction);
+            AuctionDetailsViewModel model = new AuctionDetailsViewModel();
+            model.Auction = service.GetAuctionByID(ID);
+            return View(model);
         }
     }
 }
