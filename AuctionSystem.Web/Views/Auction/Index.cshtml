@@ -45,7 +45,7 @@
 </div>
 
 <div id="imageTemplate" style="display: none">
-    <img class='image img-fluid' src="" data-id=""/>
+    <img class='image img-thumbnail' style="width: 200px; height: 200px;"  src="" data-id=""/>
 </div>
 
 <div id="listingArea">
@@ -67,7 +67,6 @@
             });
 
             $("#modalDeleteBtn").click(function () {
-                debugger;
                 var id = $(this).attr("data-id");
                 $.ajax({
                         url: '@Url.Action("Delete","Auction")',
@@ -81,6 +80,19 @@
                         $("#listingArea").html(response);
                     });
             });
+
+            //clone image template html to every added image
+            function AttachNewImage(imageID,imageURL) {
+                var imgHtml = $("#imageTemplate").clone();
+
+                imgHtml.find(".image").attr('data-id',imageID);
+                imgHtml.find(".image").attr("src", "/Content/images/" + imageURL);
+        
+
+                $("#picsArea").append(imgHtml.html());
+
+                RemoveImageOnClick();
+            }
 
             function RemoveImageOnClick() {
                 $("#picsArea .image").click(function () {

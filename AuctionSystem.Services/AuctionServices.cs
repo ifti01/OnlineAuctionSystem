@@ -48,7 +48,13 @@ namespace AuctionSystem.Services
         {
             AuctionSystemContext context = new AuctionSystemContext();
 
-            context.Entry(auction).State = EntityState.Modified;
+            var existingAuction = context.Auctions.Where(x => x.ID == auction.ID).Include(x => x.AuctionPictures).First();
+            
+            context.AuctionPictures.RemoveRange(existingAuction.AuctionPictures);
+
+            context.Entry(existingAuction).CurrentValues.SetValues(auction);
+
+            context.AuctionPictures.AddRange(auction.AuctionPictures);
 
             context.SaveChanges();
 
