@@ -24,7 +24,7 @@ namespace AuctionSystem.Services
         {
             AuctionSystemContext context = new AuctionSystemContext();
 
-            return context.Auctions.Find(ID);
+            return context.Auctions.Include(x=>x.AuctionPictures).Include("AuctionPictures.Picture").Where(x => x.ID == ID).First();
 
         }
 

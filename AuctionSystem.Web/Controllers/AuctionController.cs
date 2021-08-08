@@ -77,19 +77,20 @@ namespace AuctionSystem.Web.Controllers
         {
             CreateAuctionViewModel model = new CreateAuctionViewModel();
 
-            var auctionservice = service.GetAuctionByID(ID);
+            //var auctionservice = service.GetAuctionByID(ID);
 
-            model.ID = auctionservice.ID;
-            model.Title = auctionservice.Title;
-            model.Description = auctionservice.Description;
-            model.ActualAmount = auctionservice.ActualAmount;
-            model.StartingTime = auctionservice.StartingTime;
-            model.EndTime = auctionservice.EndTime;
+            //model.ID = auctionservice.ID;
+            //model.Title = auctionservice.Title;
+            //model.Description = auctionservice.Description;
+            //model.ActualAmount = auctionservice.ActualAmount;
+            //model.StartingTime = auctionservice.StartingTime;
+            //model.EndTime = auctionservice.EndTime;
 
 
             model.Categories = categoriesService.GetAllCategories();
-            
-            model.AuctionPicturesList = auctionservice.AuctionPictures;
+            model.Auction = service.GetAuctionByID(ID);
+
+            //model.AuctionPicturesList = auctionservice.AuctionPictures;
 
             
             return PartialView(model);
@@ -100,9 +101,12 @@ namespace AuctionSystem.Web.Controllers
         [HttpPost]
         public ActionResult Edit(CreateAuctionViewModel model)
         {
-            Auction auction = new Auction();
+            //Auction auction = new Auction();
 
-            auction.ID = model.ID;
+            var auction = service.GetAuctionByID(model.ID);
+
+            //auction.ID = model.ID;
+
             auction.Title = model.Title;
             auction.CategoryID = model.CategoryID;
             auction.Description = model.Description;
