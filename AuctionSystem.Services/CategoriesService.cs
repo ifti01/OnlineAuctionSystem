@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,44 @@ namespace AuctionSystem.Services
         {
             AuctionSystemContext context = new AuctionSystemContext();
 
-            return context.Categories.ToList();
+            return context.Categories.Include(c=>c.Auctions).ToList();
+        }
+
+        public void SaveCategory(Category category)
+        {
+            AuctionSystemContext context = new AuctionSystemContext();
+
+            context.Categories.Add(category);
+            context.SaveChanges();
+
+        }
+
+        public Category GetCategoryByID(int ID)
+        {
+
+            AuctionSystemContext context = new AuctionSystemContext();
+
+            return context.Categories.Include(x => x.Auctions).Where(x => x.ID == ID).First();
+
+        }
+
+        public void UpdateCategory(Category category)
+        {
+            AuctionSystemContext context = new AuctionSystemContext();
+
+            context.Entry(category).State = EntityState.Modified;
+
+            context.SaveChanges();
+
+        }
+
+        public void DeleteCategory(Category category)
+        {
+            AuctionSystemContext context = new AuctionSystemContext();
+
+            context.Entry(category).State = EntityState.Deleted;
+
+            context.SaveChanges();
         }
     }
 }

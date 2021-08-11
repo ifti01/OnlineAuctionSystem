@@ -1,0 +1,66 @@
+﻿@model AuctionSystem.Web.ViewModels.CategoryListingViewModel
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Auction
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Model.Categories != null && Model.Categories.Count > 0)
+    {
+    foreach (var item in Model.Categories)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Description</td>
+            @if (item.Auctions != null && item.Auctions.Count > 0)
+            {
+                <td><a href="@Url.Action("Index", "Auction", new {CategoryID = item.ID})">@item.Auctions.Count()</a></td>
+            }
+            else
+            {
+                <td>0</td>
+            }
+
+            <td>
+                <button data-id="@item.ID" class="editButton  btn btn-primary">Edit</button> |
+                <button data-id="@item.ID" class="deleteButton  btn btn-danger">Delete</button>
+            </td>
+        </tr>
+    }
+    }
+    </tbody>
+</table>
+
+<script>
+    $(".editButton").click(function() {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("Edit", "Category")',
+            data: {
+                ID:$(this).attr("data-id")
+            }
+        }).done(function (response) {
+
+            $("#formModal").modal("toggle");
+            $("#contentArea").html(response);
+        });
+    });
+
+    $(".deleteButton").click(function () {
+
+        $("#deleteModal").modal("toggle");
+        $("#modalDeleteBtn").attr("data-id", $(this).attr("data-id"));
+    });
+</script>
+

@@ -1,0 +1,82 @@
+﻿<div class="row">
+    <div class="col-lg-12 m-3">
+        <div class="float-left">
+            <h2>Categories</h2>
+        </div>
+
+        <div class="float-right">
+            <!-- Create button modal -->
+            <button class="btn btn-success" id="createbutton">Create New Category</button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" id="contentArea">
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirm!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this Category?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger" id="modalDeleteBtn">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="listingArea">
+    @{
+        Html.RenderAction("Listing");
+    }
+</div>
+
+<script>
+            $("#createbutton").click(function() {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("Create", "Category")',
+                }).done(function (response) {
+
+                    $("#formModal").modal("toggle");
+                    $("#contentArea").html(response);
+                });
+            });
+
+            $("#modalDeleteBtn").click(function () {
+                var id = $(this).attr("data-id");
+                $.ajax({
+                        url: '@Url.Action("Delete","Category")',
+                        method: 'Post',
+                        data: {
+                            id: id,
+                        }
+                    })
+                    .done(function(response) {
+                        $("#deleteModal").modal('toggle');
+                        $("#listingArea").html(response);
+                    });
+            });
+</script>
+
+
+
+
