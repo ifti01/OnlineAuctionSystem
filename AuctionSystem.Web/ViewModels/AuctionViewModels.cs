@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Routing;
 using AuctionSystem.Entities;
 
 namespace AuctionSystem.Web.ViewModels
@@ -15,8 +16,12 @@ namespace AuctionSystem.Web.ViewModels
     public class AuctionListingViewModel : PageViewModel
     {
         public List<Auction> Auctions { get; set; }
+        public Pager Pager { get; set; }
+        public int? CategoryID { get; set; }
+        public string searchTerm { get; set; }
+        public int? pageNo { get; set; }
+        public List<Category> Categories { get; set; }
     }
-
     public class AuctionDetailsViewModel : PageViewModel
     {
         public Auction Auction { get; set; }

@@ -1,26 +1,67 @@
-﻿<div class="row">
+﻿@model AuctionSystem.Web.ViewModels.AuctionListingViewModel
+
+
+<div class="row">
     <div class="col-lg-12 m-3">
         <div class="float-left">
             <h2>Auctions</h2>
         </div>
+    </div>
+</div>
 
-        <div class="float-right">
+<div class="row mb-3">
+    <div class="col col-lg-12">
+        <form>
+            <div class="input-group">
+                @if (Model.Categories != null && Model.Categories.Count() > 0)
+                {
+                    <select class="form-control mr-1" name="selectCategory" id="selectCategory">
+                        <option value="0">
+                            Select Category
+                        </option>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.ID" @(Model.CategoryID == category.ID ? "selected" : string.Empty)>
+                                @category.Name
+                            </option>
+                        }
+                    </select>
+                }
+                <input type="text" name="searchTxt" class="form-control mr-1" placeholder="Search by title..." value="@Model.searchTerm">
+                <div class="input-group-append" id="button-addon4">
+                    <button class="btn btn-outline-primary mr-1" type="submit">Search</button>
+                    <a href="@Url.Action("Index","Auction")" class="btn btn-outline-secondary mr-1">Reset</a>
+                    <button class="action-btn btn btn-outline-success" id="createBtn" type="button">New</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <div id="listingArea">
+        @{
+            Html.RenderAction("Listing");
+        }
+    </div>
+
+
+
+    <div class="float-right">
             <!-- Create button modal -->
             <button class="btn btn-success" id="createbutton">Create new auction</button>
-        </div>
-        
-     
+    </div>
+
+
 
         <!-- Modal -->
         <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content" id="contentArea">
 
-                  
+
                 </div>
             </div>
         </div>
-        
+
         <!-- Delete modal -->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -41,20 +82,14 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
+
 
 <div id="imageTemplate" style="display: none">
-    <img class='image img-thumbnail' style="width: 200px; height: 200px;"  src="" data-id=""/>
+    <img class='image img-thumbnail' style="width: 200px; height: 200px;" src="" data-id="" />
 </div>
 
-<div id="listingArea">
-    @{
-        Html.RenderAction("Listing");
-    }
-</div>
-
-    <script>
+<script>
             $("#createbutton").click(function() {
                 $.ajax({
                     type: 'GET',
@@ -87,7 +122,7 @@
 
                 imgHtml.find(".image").attr('data-id',imageID);
                 imgHtml.find(".image").attr("src", "/Content/images/" + imageURL);
-        
+
 
                 $("#picsArea").append(imgHtml.html());
 
@@ -102,6 +137,6 @@
 
                 })
             }
-    </script>
-    
+</script>
+
 

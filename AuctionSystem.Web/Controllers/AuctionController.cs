@@ -13,30 +13,39 @@ namespace AuctionSystem.Web.Controllers
     public class AuctionController : Controller
     {
         AuctionServices service = new AuctionServices();
-
         CategoriesService categoriesService = new CategoriesService();
         // GET: Auction
-        public ActionResult Index()
-        {
+        public ActionResult Index(int? categoryID,string searchTerm,int? pageNo)
+        { 
             AuctionListingViewModel model = new AuctionListingViewModel();
             
             model.PageTitle = "Auction Page";
             model.PageDescription = "List of the Auctions";
 
+            model.CategoryID = categoryID;
+            model.searchTerm = searchTerm;
+            model.pageNo = pageNo;
+
+            model.Categories = categoriesService.GetAllCategories();
+
             return View(model);
-            
         }
-
-        public ActionResult Listing()
+        public ActionResult Listing(int? categoryID, string searchTerm, int? pageNo)
         {
+            var pageSize = 5;
+
             AuctionListingViewModel model = new AuctionListingViewModel();
 
             model.PageTitle = "Auction Page";
             model.PageDescription = "List of the Auctions";
 
-            model.Auctions = service.GetAllAuction();
+            model.Auctions = service.SearchAuctions(categoryID,searchTerm,pageNo,pageSize);
 
-            return View(model);
+            var totalAuctions = service.GetAuctionsCount();
+
+            model.Pager = new Pager(totalAuctions, pageNo, pageSize);
+
+            return PartialView(model);
 
         }
 

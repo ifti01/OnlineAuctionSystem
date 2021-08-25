@@ -29,21 +29,48 @@ namespace AuctionSystem.Services
         }
 
         public List<Auction> GetAllAuction()
+        { 
+            AuctionSystemContext context = new AuctionSystemContext();
+            return context.Auctions.ToList();
+        }
+
+        //get auctions by filtering them using search, category, and page no
+        public List<Auction> SearchAuctions(int? categoryID, string searchTerm, int? pageNo,int pageSize)
+        {
+
+            AuctionSystemContext context = new AuctionSystemContext();
+
+            var auctions = context.Auctions.AsQueryable();
+            if (categoryID.HasValue && categoryID.Value>0)
+            {
+                auctions = auctions.Where(x => x.CategoryID == categoryID.Value);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                auctions = auctions.Where(x => x.Title.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            pageNo = pageNo ?? 1;
+            int skipCount = pageSize * (pageNo.Value - 1);
+
+            return auctions.OrderByDescending(a => a.ID).Skip(skipCount).Take(pageSize).ToList();
+        }
+
+        public int GetAuctionsCount()
         {
             AuctionSystemContext context = new AuctionSystemContext();
 
-            return context.Auctions.ToList();
-
+            return context.Auctions.Count();
         }
+
         public List<Auction> GetFeaturedAuction()
         {
             AuctionSystemContext context = new AuctionSystemContext();
-
             return context.Auctions.Take(4).ToList();
 
         }
 
-        
         public void UpdateAuction(Auction auction)
         {
             AuctionSystemContext context = new AuctionSystemContext();
