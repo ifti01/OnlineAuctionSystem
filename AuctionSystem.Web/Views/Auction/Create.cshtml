@@ -66,40 +66,32 @@
 
 <script>
 
-    $("#createForm").validate({
+    $("#createform").validate({
         rules: {
-            Title: {
+            title: {
                 required:true,
                 minlength:15,
                 maxlength:150
             },
-            ActualAmount: {
+            actualamount: {
                 required: true,
                 range: [10, 1000000]
             }
         },
             messages: {
-                Title: {
-                    required:"Title is required",
-                    minlength:"MinLength is 15",
-                    maxlength:"MaxLength is 150"
+                title: {
+                    required:"title is required",
+                    minlength:"minlength is 15",
+                    maxlength:"maxlength is 150"
                 
             },
-                ActualAmount: {
-                    required: "Actual Amount is required",
-                    range: "Invalid Range"
+                actualamount: {
+                    required: "actual amount is required",
+                    range: "invalid range"
                     }
             },
         
     })
-
-
-
-
-
-
-
-
 
     $("#saveButton").click(function() {
         debugger;
