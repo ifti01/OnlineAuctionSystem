@@ -15,7 +15,8 @@ namespace AuctionSystem.Services
         {
             AuctionSystemContext context = new AuctionSystemContext();
 
-            return context.Categories.Include(c=>c.Auctions).ToList();
+            return context.Categories.Include(c => c.Auctions).ToList();
+            //return context.Categories.ToList();
         }
 
         public void SaveCategory(Category category)

@@ -13,7 +13,7 @@
 
         <div class="form-group">
             <label for="title">Title</label>
-            <input name="Title" class="form-control" placeholder="Enter Title">
+            <input name="Title" class="form-control" placeholder="Enter Title" value="@Model.Title">
         </div>
         <div class="form-group">
             <label>Category</label>
@@ -26,21 +26,18 @@
         </div>
         <div class="form-group">
             <label for="description">Description</label>
-            <input name="Description" class="form-control" placeholder="Enter Description">
+            <input name="Description" class="form-control" placeholder="Enter Description" value="@Model.Description">
         </div>
         <div class="form-group">
             <label for="amount">Actual Amount</label>
-            <input name="ActualAmount" class="form-control" placeholder="Enter Amount">
+            <input name="ActualAmount" class="form-control" placeholder="Enter Amount" value="@Model.ActualAmount">
         </div>
         <div class="form-group">
             <label>Starting Time</label>
-            @*<input type="text" class="form-control" name="StartingTime" id="StartingTime" />*@
-            <input name="StartingTime" class="form-control" />
         </div>
         <div class="form-group">
             <label>Ending Time</label>
-            @*<input type="text" class="form-control" name="EndingTime" id="EndingTime" />*@
-            <input name="EndTime" class="form-control" />
+            <input name="EndTime" class="form-control"  value="@Model.StartingTime"/>
         </div>
         
         <div class="form-group">
@@ -51,6 +48,10 @@
             </div>
             
             <input type="hidden" name="AuctionPictures" id="pictureIDs" />
+        </div>
+        
+        <div id="formErrors" class="form-group bg-danger "  style="display: none">
+
         </div>
         
     </div>
@@ -64,31 +65,75 @@
 
 
 <script>
-    $("#saveButton").click(function () {
-        debugger;
+
+    $("#createForm").validate({
+        rules: {
+            Title: {
+                required:true,
+                minlength:15,
+                maxlength:150
+            },
+            ActualAmount: {
+                required: true,
+                range: [10, 1000000]
+            }
+        },
+            messages: {
+                Title: {
+                    required:"Title is required",
+                    minlength:"MinLength is 15",
+                    maxlength:"MaxLength is 150"
+                
+            },
+                ActualAmount: {
+                    required: "Actual Amount is required",
+                    range: "Invalid Range"
+                    }
+            },
         
-        var imageIDs = [];
-
-        $("#picsArea .image").each(function () {
-
-            
-            var imageID = $(this).attr("data-id");
-            imageIDs.push(imageID);
-        })
-
-        $("#pictureIDs").val(imageIDs);
+    })
 
 
-        $.ajax({
-                type: 'POST',
-                url: '@Url.Action("Create", "Auction")',
-                data: $("#createForm").serialize()
+
+
+
+
+
+
+
+    $("#saveButton").click(function() {
+        debugger;
+
+        if ($("#createForm").valid()) {
+            var imageIDs = [];
+
+            $("#picsArea .image").each(function() {
+
+                var imageID = $(this).attr("data-id");
+                imageIDs.push(imageID);
             })
-            .done(function(response) {
 
-                $('#formModal').modal('toggle');
-                $("#listingArea").html(response);
-            });
+            $("#pictureIDs").val(imageIDs);
+
+            $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Create", "Auction")',
+                    data: $("#createForm").serialize()
+                })
+                .done(function (response) {
+                    debugger; 
+                    if (response.success) {
+                        ReloadListing();
+                        $('#formModal').modal('toggle');
+                    
+                    }
+                    else {
+                        $("#formErrors").html(response.Error);
+                        $("#formErrors").show();
+                    }
+
+                });
+        }
     });
 
     $("#auctionPictures").change(function() {
@@ -100,12 +145,12 @@
         }
 
         $.ajax({
-            type: 'POST',
-            url: '@Url.Action("UploadPictures", "Shared")',
-            data: picsData,
-            dataType: 'json',
-            processData: false,
-            contentType: false
+                type: 'POST',
+                url: '@Url.Action("UploadPictures", "Shared")',
+                data: picsData,
+                dataType: 'json',
+                processData: false,
+                contentType: false
             })
             .done(function(responses) {
 
@@ -117,6 +162,5 @@
             });
     });
 
-    
 
 </script>

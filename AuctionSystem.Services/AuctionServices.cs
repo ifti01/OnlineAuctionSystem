@@ -57,11 +57,22 @@ namespace AuctionSystem.Services
             return auctions.OrderByDescending(a => a.ID).Skip(skipCount).Take(pageSize).ToList();
         }
 
-        public int GetAuctionsCount()
+        public int GetAuctionsCount(int? categoryID,string searchTerm)
         {
             AuctionSystemContext context = new AuctionSystemContext();
 
-            return context.Auctions.Count();
+            var auctions = context.Auctions.AsQueryable();
+            if (categoryID.HasValue && categoryID.Value > 0)
+            {
+                auctions = auctions.Where(x => x.CategoryID == categoryID.Value);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                auctions = auctions.Where(x => x.Title.ToLower().Contains(searchTerm.ToLower()));
+            }
+
+            return auctions.Count();
         }
 
         public List<Auction> GetFeaturedAuction()

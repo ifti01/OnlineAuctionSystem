@@ -33,26 +33,11 @@
             <td>@item.StartingTime</td>
             <td>@item.EndTime</td>
 
-            @*<td>
-                    <input type="hidden" value="@item.ID" />
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ActualAmount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartingTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndTime)
-                </td>*@
             <td>
                 <button data-id="@item.ID" class="editButton  btn btn-primary">Edit</button> |
                 <button data-id="@item.ID" class="deleteButton  btn btn-danger">Delete</button>
             </td>
+
         </tr>
     }
 
@@ -70,8 +55,10 @@
     else
     {
     <li class="page-item">
-        <a class="page-link" href="@Url.Action("Index","Auction",
-                                                             new {pageNo = Model.Pager.CurrentPage-1 })">Previous</a>
+        <a class="page-link" href="@Url.Action("Index", "Auction",
+                                       new {pageNo = Model.Pager.CurrentPage - 1, 
+                                           categoryID = Model.CategoryID, searchTerm = Model.searchTerm})">Previous
+        </a>
     </li>
     }
 
@@ -79,8 +66,10 @@
     {
         var active = page == Model.Pager.CurrentPage ? "active" : string.Empty;
         
-        <li class="page-item @active"><a class="page-link" href="@Url.Action("Index","Auction",
-                                                             new {pageNo = Page })">@page</a></li>
+        <li class="page-item @active"><a class="page-link" href="@Url.Action("Index", "Auction", new {pageNo = page, categoryID = Model.CategoryID, searchTerm = Model.searchTerm})">
+            @page
+        </a>
+        </li>
         
     }
     @if (Model.Pager.CurrentPage == Model.Pager.EndPage) 
@@ -90,7 +79,7 @@
     else
     {
         <li class="page-item"><a class="page-link" href="@Url.Action("Index", "Auction",
-                                                             new { pageNo = Model.Pager.CurrentPage + 1})">Next</a></li>
+                                                             new { pageNo = Model.Pager.CurrentPage + 1,categoryID = Model.CategoryID,searchTerm = Model.searchTerm})">Next</a></li>
     }
         </ul>
         </nav>

@@ -32,7 +32,7 @@ namespace AuctionSystem.Web.Controllers
         }
         public ActionResult Listing(int? categoryID, string searchTerm, int? pageNo)
         {
-            var pageSize = 5;
+            var pageSize = 3;
 
             AuctionListingViewModel model = new AuctionListingViewModel();
 
@@ -41,7 +41,7 @@ namespace AuctionSystem.Web.Controllers
 
             model.Auctions = service.SearchAuctions(categoryID,searchTerm,pageNo,pageSize);
 
-            var totalAuctions = service.GetAuctionsCount();
+            var totalAuctions = service.GetAuctionsCount(categoryID, searchTerm);
 
             model.Pager = new Pager(totalAuctions, pageNo, pageSize);
 
@@ -58,28 +58,42 @@ namespace AuctionSystem.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CreateAuctionViewModel model)
+        public JsonResult Create(CreateAuctionViewModel model)
         {
-            Auction auction = new Auction();
+            JsonResult result = new JsonResult();
 
-            auction.Title = model.Title;
-            auction.Description = model.Description;
-            auction.ActualAmount = model.ActualAmount;
-            auction.StartingTime = model.StartingTime;
-            auction.EndTime = model.EndTime;
-            auction.CategoryID = model.CategoryID;
-
-            //check AuctionPictureID Posted back from Form
-            if (!string.IsNullOrEmpty(model.AuctionPictures))
+            if (ModelState.IsValid)
             {
-                var pictureID = model.AuctionPictures.Split(',').Select(int.Parse);
+                Auction auction = new Auction();
 
-                //var pictureIds = model.AuctionPictures.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
-                auction.AuctionPictures = new List<AuctionPicture>();
-                auction.AuctionPictures.AddRange(pictureID.Select(x => new AuctionPicture() {AuctionID =auction.ID,PictureID = x }).ToList());
+                auction.Title = model.Title;
+                auction.Description = model.Description;
+                auction.ActualAmount = model.ActualAmount;
+                auction.StartingTime = model.StartingTime;
+                auction.EndTime = model.EndTime;
+                auction.CategoryID = model.CategoryID;
+
+                //check AuctionPictureID Posted back from Form
+                if (!string.IsNullOrEmpty(model.AuctionPictures))
+                {
+                    var pictureID = model.AuctionPictures.Split(',').Select(int.Parse);
+
+                    //var pictureIds = model.AuctionPictures.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+                    auction.AuctionPictures = new List<AuctionPicture>();
+                    auction.AuctionPictures.AddRange(pictureID
+                        .Select(x => new AuctionPicture() {AuctionID = auction.ID, PictureID = x}).ToList());
+                }
+
+                service.SaveAuction(auction);
+
+                result.Data = new {success = true};
             }
-            service.SaveAuction(auction);
-            return RedirectToAction("Listing");
+            else
+            {
+                result.Data = new {success = false, Error = "Invalid Inputs,Unable to Save Auction" };
+            }
+
+            return result;
         }
 
         public ActionResult Edit(int ID)
