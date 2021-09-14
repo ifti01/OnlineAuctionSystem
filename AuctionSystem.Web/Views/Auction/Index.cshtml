@@ -16,7 +16,7 @@
     <div class="col col-lg-12">
         <form method="post">
             <div class="input-group">
-                @if (Model.Categories != null && Model.Categories.Count() > 0)
+                @if (Model.Categories != null && Model.Categories.Count > 0)
                 {
                     <select class="form-control mr-1" name="categoryID">
                         <option>
@@ -30,7 +30,7 @@
                     </select>
                 }
 
-                <input type="text" id="searchTxt" name="searchTerm" class="form-control mr-1" placeholder="Search" value="@Model.searchTerm">
+                <input type="text" id="searchTxt" name="SearchTerm" class="form-control mr-1" placeholder="Search" value="@Model.searchTerm">
 
                 <div class="input-group-append" id="button-addon4">
 
@@ -46,11 +46,9 @@
 
     <div id="listingArea">
         @{
-            Html.RenderAction("Listing");
+            Html.RenderAction("Listing",new { categoryID = Model.CategoryID, SearchTerm = Model.searchTerm, PageNo = Model.pageNo});
         }
     </div>
-
-
 
     <div class="float-right">
         <!-- Create button modal -->
@@ -130,7 +128,7 @@
                 var searchValue = $("#searchTxt").val();
 
                 $.ajax({
-                    url: '@Url.Action("Index", "Auction")',
+                    url: '@Url.Action("Listing", "Auction")',
                     data: {
                         categoryId: $("#categoryID").val(),
                         search: searchValue
@@ -164,7 +162,7 @@
                     $(this).remove();
 
                 });
-            }
+    }
 
             function ReloadListing() {
                 $.ajax({

@@ -30,7 +30,7 @@ namespace AuctionSystem.Web.Controllers
 
             return View(model);
         }
-        public ActionResult Listing(int? categoryID, string searchTerm, int? pageNo)
+        public PartialViewResult Listing(int? categoryID, string searchTerm, int? pageNo)
         {
             var pageSize = 3;
 
