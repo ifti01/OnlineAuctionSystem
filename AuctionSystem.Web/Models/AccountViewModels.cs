@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using AuctionSystem.Web.ViewModels;
+
 
 namespace AuctionSystem.Web.Models
 {
@@ -46,7 +48,7 @@ namespace AuctionSystem.Web.Models
         public string Email { get; set; }
     }
 
-    public class LoginViewModel
+    public class LoginViewModel:PageViewModel
     {
         [Required]
         [Display(Name = "Email")]
@@ -62,7 +64,7 @@ namespace AuctionSystem.Web.Models
         public bool RememberMe { get; set; }
     }
 
-    public class RegisterViewModel
+    public class RegisterViewModel:PageViewModel
     {
         [Required]
         [EmailAddress]
