@@ -36,9 +36,9 @@ namespace AuctionSystem.Web.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<AuctionSystemSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
